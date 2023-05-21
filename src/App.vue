@@ -3,15 +3,18 @@
       <h2>230518-스터디 Todolist</h2>
       <TodoListApi />
       <TodoListTemplate />
+      <TodoListApiMod />
   </div>
 </template>
 
 <script>
+import TodoListApiMod from './components/TodoListApiMod/TodoListApiMod.vue'
 import TodoListApi from './components/TodoListApi/TodoListApi.vue'
 import TodoListTemplate from './components/TodoList/TodoListTemplate.vue'
 export default {
   name: 'App',
   components: {
+    TodoListApiMod,
     TodoListApi,
     TodoListTemplate
   }

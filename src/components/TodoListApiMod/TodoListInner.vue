@@ -1,13 +1,8 @@
 <template>
   <div class="todo-inner">
-    <select>
-      <option disabled value="">다음 중 하나를 선택하세요</option>
-      <option v-for="item in propsname" :key="item">{{ item.name }}</option>
-    </select>
-
     <ul>
       <li 
-        v-for="(todoItem, index) in propsdata"
+        v-for="(todoItem, index) in props.propsdata"
         :key="index"
         class="shadow">
         <button 
@@ -20,7 +15,6 @@
           >
             <i class="fas fa-check"></i>
           </span>
-          {{ todoItem.name }} :
           {{ todoItem.item }}
         </button>
         
@@ -34,22 +28,21 @@
     </ul>
   </div>
 </template>
-<script>
-export default {
-  props:[
-    'propsdata',
-    'propsname'
-  ],
-  methods: {
-    removeTodo: function(todoItem, index) {
-      this.$emit('removeItem', todoItem, index);
-    },
-    toggleComplete: function(todoItem, index){
-      console.log("button")
-      this.$emit('toggleEvent', todoItem, index)
-    }
-  }
+
+<script setup>
+import { defineProps, defineEmits } from 'vue'
+
+const props = defineProps(['propsdata'])
+const emit = defineEmits(['removeItem', 'toggleEvent'])
+
+console.log(props.propsdata)
+function removeTodo(todoItem, index){
+  emit('removeItem', todoItem, index);
 }
+function toggleComplete(todoItem, index){
+  emit('toggleEvent', todoItem, index)
+}
+
 </script>
 <style scoped>
 ul {

@@ -6,6 +6,7 @@
       />
       <TodoListInner 
         v-bind:propsdata="todoItems"
+        v-bind:propsname="todoNames"
         v-on:removeItem="removeOneItem"
         v-on:toggleEvent="toggleOneItem" 
       />
@@ -32,20 +33,26 @@ export default {
       todoItems: []
     }
   },
+  computed: {
+    todoNames(){
+      return this.todoItems.filter((name) => name)
+    }
+  },
   methods: {
-    addOneItem: function(todoItem) {
-      var obj = {completed: false, item: todoItem};
-      localStorage.setItem(todoItem, JSON.stringify(obj));
+    addOneItem: function(name, todoItem) {
+      let uuid = localStorage.length + 1
+      let obj = {completed: false, id: uuid, name: name, item: todoItem};
+      localStorage.setItem(obj.id, JSON.stringify(obj));
       this.todoItems.push(obj);
     },
     removeOneItem: function(todoItem, index){
-      this.todoItems.splice(index,1);
-      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1);
+      localStorage.removeItem(todoItem.id);
     },
     toggleOneItem: function(todoItem, index){
       this.todoItems[index].completed = !this.todoItems[index].completed;
-      localStorage.removeItem(todoItem.item);
-      localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
+      // localStorage.removeItem(todoItem.item);
+      // localStorage.setItem(todoItem.id, JSON.stringify(todoItem))
     },
     clearAllItems: function() {
       localStorage.clear();
