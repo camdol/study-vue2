@@ -35,7 +35,8 @@ export default {
   },
   computed: {
     todoNames(){
-      return this.todoItems.filter((name) => name)
+      const newArray = this.todoItems.filter((arr, index, callback) => index === callback.findIndex(t => t.name === arr.name))
+      return newArray.map(key => key.name)
     }
   },
   methods: {
@@ -44,6 +45,7 @@ export default {
       let obj = {completed: false, id: uuid, name: name, item: todoItem};
       localStorage.setItem(obj.id, JSON.stringify(obj));
       this.todoItems.push(obj);
+      console.log(this.todoItems[2])
     },
     removeOneItem: function(todoItem, index){
       this.todoItems.splice(index, 1);

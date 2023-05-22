@@ -2,9 +2,9 @@
   <div class="todo-inner">
     <select>
       <option disabled value="">다음 중 하나를 선택하세요</option>
-      <option v-for="item in propsname" :key="item">{{ item.name }}</option>
+      <option v-for="item in propsname" :key="item">{{ item }}</option>
     </select>
-
+    {{ propsname }}
     <ul>
       <li 
         v-for="(todoItem, index) in propsdata"
