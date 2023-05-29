@@ -44,6 +44,7 @@ export default {
       let obj = {completed: false, id: uuid, name: name, item: todoItem};
       localStorage.setItem(obj.id, JSON.stringify(obj));
       this.todoItems.push(obj);
+      console.log(this.todoItems[2])
     },
     changeTodo: function(event) {
       //const asisSelect = this.selected1;
