@@ -8,7 +8,7 @@
         v-bind:propsdata="todoItems"
         v-bind:propsname="todoNames"
         v-on:removeItem="removeOneItem"
-        v-on:toggleEvent="toggleOneItem" 
+        v-on:toggleEvent="toggleOneItem"
       />
       <TodoListFooter 
         v-on:clearAll="clearAllItems"
@@ -30,12 +30,12 @@ export default {
   },
   data () {
     return {
-      todoItems: []
+      todoItems: [],
     }
   },
   computed: {
     todoNames(){
-      return this.todoItems.filter((name) => name)
+      return [...new Set(this.todoItems.map((el) => el.name))];
     }
   },
   methods: {
@@ -44,6 +44,13 @@ export default {
       let obj = {completed: false, id: uuid, name: name, item: todoItem};
       localStorage.setItem(obj.id, JSON.stringify(obj));
       this.todoItems.push(obj);
+    },
+    changeTodo: function(event) {
+      //const asisSelect = this.selected1;
+      // 변경 적용
+      this.selected1 = event.target.value
+      const selectData = this.propsdata.filter( item => item.name === this.selected1)
+      return selectData
     },
     removeOneItem: function(todoItem, index){
       this.todoItems.splice(index, 1);

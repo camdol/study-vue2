@@ -1,10 +1,10 @@
 <template>
   <div class="todo-inner">
-    <select>
+    <select v-on:change="changeTodo($event)">
       <option disabled value="">다음 중 하나를 선택하세요</option>
-      <option v-for="item in propsname" :key="item">{{ item.name }}</option>
+      <option v-for="name in propsname" :key="name" :value="name">{{ name }}</option>
     </select>
-
+    <span>선택 value: {{ selected1 }}</span>
     <ul>
       <li 
         v-for="(todoItem, index) in propsdata"
@@ -41,6 +41,7 @@ export default {
     'propsname'
   ],
   methods: {
+    
     removeTodo: function(todoItem, index) {
       this.$emit('removeItem', todoItem, index);
     },

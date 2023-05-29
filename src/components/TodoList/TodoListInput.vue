@@ -43,7 +43,7 @@ export default {
     clearInput: function(){
       this.newTodoItem = '';
       this.newName = '';
-    }
+    },
   }
 }
 </script>
