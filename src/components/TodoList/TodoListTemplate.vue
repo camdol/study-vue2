@@ -5,10 +5,11 @@
         v-on:addTodoItem="addOneItem" 
       />
       <TodoListInner 
-        v-bind:propsdata="todoItems"
+        v-bind:propsdata="todoChgItems"
         v-bind:propsname="todoNames"
         v-on:removeItem="removeOneItem"
         v-on:toggleEvent="toggleOneItem"
+        v-on:changeEvent="changeTodoItem"
       />
       <TodoListFooter 
         v-on:clearAll="clearAllItems"
@@ -31,6 +32,7 @@ export default {
   data () {
     return {
       todoItems: [],
+      todoChgItems: [],
     }
   },
   computed: {
@@ -46,16 +48,17 @@ export default {
       this.todoItems.push(obj);
       console.log(this.todoItems[2])
     },
-    changeTodo: function(event) {
-      //const asisSelect = this.selected1;
-      // 변경 적용
-      this.selected1 = event.target.value
-      const selectData = this.propsdata.filter( item => item.name === this.selected1)
-      return selectData
+    changeTodoItem: function(event) {
+      let selectItem = event.target.value
+      if(selectItem === 'all') {
+        return this.todoChgItems = this.todoItems
+      }
+      this.todoChgItems = this.todoItems.filter( item => item.name === selectItem)
+      return this.todoChgItems
     },
     removeOneItem: function(todoItem, index){
-      this.todoItems.splice(index, 1);
-      localStorage.removeItem(todoItem.id);
+      this.todoItems.splice(index, 1)
+      localStorage.removeItem(todoItem.id)
     },
     toggleOneItem: function(todoItem, index){
       this.todoItems[index].completed = !this.todoItems[index].completed;
@@ -63,8 +66,9 @@ export default {
       // localStorage.setItem(todoItem.id, JSON.stringify(todoItem))
     },
     clearAllItems: function() {
-      localStorage.clear();
-      this.todoItems = [];
+      localStorage.clear()
+      this.todoItems = []
+      this.todoChgItems = []
     }
   },
   created: function() {
@@ -72,6 +76,7 @@ export default {
       for(var i = 0; i<localStorage.length; i++){
         if(localStorage.key(i) !== 'loglevel:webpack-dev-serve'){
           this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+          this.todoChgItems = this.todoItems
         }
       }
     }
