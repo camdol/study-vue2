@@ -38,8 +38,8 @@ function addTodo() {
   if(newTodoItem.value !== "" && newName.value !==''){
     // this.$emit('이벤트 이름', 인자1, 인자2, ...);
     emit('addTodoItem', newName.value, newTodoItem.value)
-    clearInput();
-    name.value.focus();
+    clearInput()
+    name.value.focus()
   }
 }
 function clearInput() {

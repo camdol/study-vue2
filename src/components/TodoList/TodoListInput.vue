@@ -38,12 +38,12 @@ export default {
         // this.$emit('이벤트 이름', 인자1, 인자2, ...);
         this.$emit('addTodoItem', this.newName, this.newTodoItem)
         this.clearInput()
-        this.$refs.name.focus();
+        this.$refs.name.focus()
       }
     },
     clearInput: function(){
-      this.newTodoItem = '';
-      this.newName = '';
+      this.newTodoItem = ''
+      this.newName = ''
     },
   }
 }

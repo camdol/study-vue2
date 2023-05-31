@@ -47,7 +47,6 @@ function changeTodo($event) {
   emit('changeEvent', $event);
 }
 function removeTodo(todoItem, index){
-  console.log('todoItem', todoItem)
   emit('removeItem', todoItem, index)
 }
 function toggleComplete(todoItem, index){

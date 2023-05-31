@@ -32,7 +32,7 @@ const todoNames = computed(() => {
 
 function addOneItem(name, todoItem){
   let uuid = localStorage.length + 1
-  let obj = {completed: false, id: uuid, name: name, item: todoItem}
+  const obj = {completed: false, id: uuid, name: name, item: todoItem}
   localStorage.setItem(obj.id, JSON.stringify(obj))
   todoItems.value.push(obj)
   todoChgItems.value = todoItems.value
@@ -68,7 +68,7 @@ function clearAllItems(){
 onMounted(() => {
   console.log("onMounted")
   if(localStorage.length > 0){
-    for(var i = 0; i<localStorage.length; i++){
+    for(let i = 0; i<localStorage.length; i++){
       if(localStorage.key(i) !== 'loglevel:webpack-dev-serve'){
         todoItems.value.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
         todoChgItems.value = todoItems.value

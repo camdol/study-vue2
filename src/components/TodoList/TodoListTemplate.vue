@@ -37,13 +37,13 @@ export default {
   },
   computed: {
     todoNames(){
-      return [...new Set(this.todoItems.map((el) => el.name))];
+      return [...new Set(this.todoItems.map((el) => el.name))]
     }
   },
   methods: {
     addOneItem: function(name, todoItem) {
       let uuid = localStorage.length + 1
-      let obj = {completed: false, id: uuid, name: name, item: todoItem}
+      const obj = {completed: false, id: uuid, name: name, item: todoItem}
       localStorage.setItem(obj.id, JSON.stringify(obj))
       this.todoItems.push(obj)
       this.todoChgItems = this.todoItems
@@ -74,7 +74,7 @@ export default {
   },
   created: function() {
     if(localStorage.length > 0){
-      for(var i = 0; i<localStorage.length; i++){
+      for(let i = 0; i<localStorage.length; i++){
         if(localStorage.key(i) !== 'loglevel:webpack-dev-serve'){
           this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
           this.todoChgItems = this.todoItems

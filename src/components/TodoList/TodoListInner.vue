@@ -44,13 +44,12 @@ export default {
   ],
   methods: { 
     changeTodo: function($event) {
-      this.$emit('changeEvent', $event);
+      this.$emit('changeEvent', $event)
     },
     removeTodo: function(todoItem, index) {
       this.$emit('removeItem', todoItem, index);
     },
     toggleComplete: function(todoItem, index){
-      console.log("button")
       this.$emit('toggleEvent', todoItem, index)
     }
   }
