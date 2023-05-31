@@ -1,5 +1,12 @@
 <template>
   <div class="todo-inner">
+    <div class="select">
+      <select @change="changeTodo($event)">
+        <option disabled value="">이름을 선택하세요</option>
+        <option value="all">전체</option>
+        <option v-for="name in props.propsname" :key="name" :value="name">{{ name }}</option>
+      </select>
+    </div>
     <ul>
       <li 
         v-for="(todoItem, index) in props.propsdata"
@@ -15,6 +22,7 @@
           >
             <i class="fas fa-check"></i>
           </span>
+          {{ todoItem.name }} :
           {{ todoItem.item }}
         </button>
         
@@ -32,12 +40,15 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue'
 
-const props = defineProps(['propsdata'])
-const emit = defineEmits(['removeItem', 'toggleEvent'])
+const props = defineProps(['propsdata', 'propsname'])
+const emit = defineEmits(['removeItem', 'toggleEvent', 'changeEvent'])
 
-console.log(props.propsdata)
+function changeTodo($event) {
+  emit('changeEvent', $event);
+}
 function removeTodo(todoItem, index){
-  emit('removeItem', todoItem, index);
+  console.log('todoItem', todoItem)
+  emit('removeItem', todoItem, index)
 }
 function toggleComplete(todoItem, index){
   emit('toggleEvent', todoItem, index)
@@ -45,6 +56,20 @@ function toggleComplete(todoItem, index){
 
 </script>
 <style scoped>
+.select {
+  max-width:500px;
+  margin:10px auto;
+  text-align:right;
+}
+select {
+  border: 1px solid #f4f4f4;
+  border-radius: 4px;
+  padding: .8em .6em;
+  margin-top: 10px;
+  background: white;
+  transition: background-color .5s
+}
+
 ul {
   max-width:500px;
   margin:0 auto;

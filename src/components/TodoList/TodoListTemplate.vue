@@ -43,10 +43,10 @@ export default {
   methods: {
     addOneItem: function(name, todoItem) {
       let uuid = localStorage.length + 1
-      let obj = {completed: false, id: uuid, name: name, item: todoItem};
-      localStorage.setItem(obj.id, JSON.stringify(obj));
-      this.todoItems.push(obj);
-      console.log(this.todoItems[2])
+      let obj = {completed: false, id: uuid, name: name, item: todoItem}
+      localStorage.setItem(obj.id, JSON.stringify(obj))
+      this.todoItems.push(obj)
+      this.todoChgItems = this.todoItems
     },
     changeTodoItem: function(event) {
       let selectItem = event.target.value
@@ -59,11 +59,12 @@ export default {
     removeOneItem: function(todoItem, index){
       this.todoItems.splice(index, 1)
       localStorage.removeItem(todoItem.id)
+      this.todoChgItems = this.todoItems
     },
     toggleOneItem: function(todoItem, index){
       this.todoItems[index].completed = !this.todoItems[index].completed;
-      // localStorage.removeItem(todoItem.item);
-      // localStorage.setItem(todoItem.id, JSON.stringify(todoItem))
+      localStorage.removeItem(todoItem.id);
+      localStorage.setItem(todoItem.id, JSON.stringify(todoItem))
     },
     clearAllItems: function() {
       localStorage.clear()

@@ -1,16 +1,27 @@
 <template>
-  <div class="inputBox shadow">
-    <input 
-      type="text" 
-      v-model="newTodoItem"
-      v-on:keyup.enter="addTodo"
-    >
-    <button
-      class="addContainer"
-      v-on:click="addTodo"
-    >
-      <i class="fas fa-plus addBtn" aria-hidden="true"></i>
-    </button>
+  <div class="input">
+    <div class="input__box shadow">
+      <input 
+        type="text" 
+        v-model="newName"
+        ref="name"
+        placeholder="Name"
+      >
+    </div>
+    <div class="input__box shadow">
+      <input 
+        type="text" 
+        v-model="newTodoItem"
+        v-on:keyup.enter="addTodo"
+        placeholder="To do list"
+      >
+      <button
+        class="addContainer"
+        v-on:click="addTodo"
+      >
+        <i class="fas fa-plus addBtn" aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -19,38 +30,51 @@ import {ref, defineEmits} from 'vue';
 
 const emit = defineEmits(['addTodoItem'])
 
-const newTodoItem = ref("");
+const newTodoItem = ref("")
+const newName = ref("")
+const name = ref()
+
 function addTodo() {
-  if(newTodoItem.value !== ""){
+  if(newTodoItem.value !== "" && newName.value !==''){
     // this.$emit('이벤트 이름', 인자1, 인자2, ...);
-    emit('addTodoItem', newTodoItem.value)
+    emit('addTodoItem', newName.value, newTodoItem.value)
     clearInput();
+    name.value.focus();
   }
 }
 function clearInput() {
-  newTodoItem.value="";
+  newTodoItem.value=""
+  newName.value=""
 }
 </script>
 <style scoped>
+.input {
+  display:flex;
+  max-width:500px;
+  margin:0 auto;
+}
 input:focus {
   outline: none;
 }
-.inputBox {
-  max-width:500px;
-  margin:0 auto;
+.input__box {
+  width:120px;
   background: white;
   height: 48px;
   line-height: 48px;
   border-radius: 5px;
 }
-.inputBox input {
+.input__box + .input__box {
+  width:calc(100% - 120px);
+  margin-left:10px;
+}
+.input__box + .input__box input {
   width:calc(100% - 3rem);
-  height: 100%;
-  border:1px solid #999;
-  border-right: none;
+}
+.input__box input {
+  width:100%;
   padding:2px 15px;
+  border-style: none;
   box-sizing:border-box;
-  vertical-align:top;
 }
 .addContainer {
   float: right;

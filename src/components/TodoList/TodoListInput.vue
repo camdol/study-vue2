@@ -4,13 +4,15 @@
       <input 
         type="text" 
         v-model="newName"
-        placeholder="name"
+        ref="name"
+        placeholder="Name"
       >
     </div>
     <div class="input__box shadow">
       <input 
         type="text" 
         v-model="newTodoItem"
+        v-on:keyup.enter="addTodo"
         placeholder="todo list"
       >
       <button
@@ -34,10 +36,9 @@ export default {
     addTodo: function() {
       if(this.newTodoItem !== '' && this.newName !==''){
         // this.$emit('이벤트 이름', 인자1, 인자2, ...);
-        console.log("name", this.newName)
-        console.log("newTodoItem", this.newTodoItem)
         this.$emit('addTodoItem', this.newName, this.newTodoItem)
-        this.clearInput();
+        this.clearInput()
+        this.$refs.name.focus();
       }
     },
     clearInput: function(){
