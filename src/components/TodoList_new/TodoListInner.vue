@@ -1,29 +1,30 @@
 <template>
   <div class="todo-inner">
-    <h3>{{ content }}</h3>
+    <h3>{{ item }}</h3>
     <ul>
-      <li 
-        v-for="todoItem in props.todoItems"
-        :key="todoItem.id"
-        class="shadow">
-        <button 
-          type="button"
-          :class="{ checkBtnCompleted: todoItem[_checked] }"
-          v-on:click="toggleEvent(todoItem.id, content)"
-        >
-          <span class="checkBtn">
-            <i class="fas fa-check"></i>
-          </span>
-          {{ todoItem[content] }} <span class="user">{{ todoItem.user }}</span>
-        </button>
-        
-        <button 
-          type="button"
-          class="removeBtn" 
-          @click="removeTodo(todoItem.id, content)">
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </li>
+       <template v-for="todoItem in props.todoItems" :key="todoItem.id">
+        <li v-if="todoItem[item]">
+          <button 
+            type="button"
+            :class="{ checkBtnCompleted: todoItem[_checked] }"
+            @click="toggleComplete(todoItem.id, item)"
+          >
+            <span
+              class="checkBtn" 
+            >
+              <i class="fas fa-check"></i>
+            </span>
+            {{ todoItem[item] }} <span class="user">{{ todoItem.user }}</span>
+          </button>
+          
+          <button 
+            type="button"
+            class="removeBtn" 
+            v-on:click="removeTodo(todoItem.id, item)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </li>
+      </template>
     </ul>
   </div>
 </template>
@@ -31,16 +32,16 @@
 <script setup>
 import { defineProps, defineEmits, computed } from 'vue'
 
-const props = defineProps(['todoItems', 'curUser', "content"])
+const props = defineProps(['todoItems', 'curUser', 'item'])
 const emit = defineEmits(['removeItem', 'toggleEvent'])
 
-function removeTodo(id, content) {
-  emit('removeItem', id, content)
+function removeTodo(id, item) {
+  emit('removeItem', id, item)
 }
-function toggleEvent(id, content) {
-  emit('toggleEvent', id, content)
+function toggleComplete(id, item) {
+  emit('toggleEvent', id, item)
 }
-const _checked = computed(() => `${props.content.replace('Content', '')}Checked`);
+const _checked = computed(() => `${props.item.replace('Item', '')}Checked`);
 </script>
 <style scoped>
 .no-data {display:none}

@@ -1,20 +1,32 @@
 <template>
+  
   <div class="input">
-    <select @change="onChangeContent">
+    <select @change="onChangeItem">
       <option 
-        v-for="content in props.contents" 
-        :key="content" 
-        :value="content"
+        v-for="item in props.items" 
+        :key="item" 
+        :value="item"
       >
-        {{ content }}
+      {{ item }}
       </option>
     </select>
     <div class="input__box shadow">
-      <input type="text" v-model="user" placeholder="이름 입력">
+      <input 
+        type="text" 
+        v-model="user"
+        placeholder="이름 입력"
+      >
     </div>
     <div class="input__box shadow">
-      <input type="text" v-model="newTodoItem" @keyup.enter="addTodo" placeholder="할 일 또는 사고 싶은 것 입력">
-      <button class="addContainer" @click="addTodo">
+      <input 
+        type="text" 
+        v-model="newTodoItem"
+        v-on:keyup.enter="addTodo"
+      >
+      <button
+        class="addContainer"
+        v-on:click="addTodo"
+      >
         <i class="fas fa-plus addBtn" aria-hidden="true"></i>
       </button>
     </div>
@@ -34,16 +46,16 @@
 
 <script setup>
 import { ref, defineEmits, defineProps } from 'vue';
-const props = defineProps(["users", "curUser", "contents", "curContent"]);
-const emit = defineEmits(["addTodoItem", "onChangeUser", "onChangeContent"])
+const props = defineProps(["users", "curUser", "items", "curItem"]);
+const emit = defineEmits(["addTodoItem", "onChangeUser", "onChangeItem"])
 const newTodoItem = ref("")
 const user = ref()
 
 function onChangeUser(e) {
   emit("onChangeUser", e.target.value);
 }
-function onChangeContent(e) {
-  emit("onChangeContent", e.target.value);
+function onChangeItem(e) {
+  emit("onChangeItem", e.target.value);
 }
 function addTodo() {
   if(newTodoItem.value !== ""){
@@ -51,7 +63,7 @@ function addTodo() {
     emit('addTodoItem', user.value, newTodoItem.value)
     clearInput()
   } else {
-    alert("내용을 입력해주세요");
+    alert("내용 입력해주세요");
   }
 }
 function clearInput() {

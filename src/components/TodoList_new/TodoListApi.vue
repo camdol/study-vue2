@@ -4,14 +4,14 @@
       <TodoListInput 
         @addTodoItem="addTodoItem" 
         @onChangeUser="onChangeUser"
-        @onChangeContent="onChangeContent"
+        @onChangeItem="onChangeItem"
         :users="users" 
         :curUser="curUser"
-        :contents="contents"
-        :curContent="curContent"
+        :items="items" 
+        :curItem="curItem"
       />
-      <TodoListInner v-for="content in contents" :key="content"
-        :content="content"
+      <TodoListInner v-for="item in items" :key="item"
+        :item="item"
         :todoItems="_todoItems"
         :curUser="curUser"
         @removeItem="removeItem"
@@ -32,72 +32,64 @@ const data = [
     {
         id: 1,
         user: '',
-        todoContent: '할 일1',
-        buyContent: '사고 싶은 것1',
+        todoItem: '할 일1',
+        buyItem: '사고 싶은 것1',
         todoChecked: true,
         buyChecked: false,
     },
     {
         id: 2,
         user: '',
-        todoContent: '할 일2',
-        buyContent: '사고 싶은 것2',
+        todoItem: '할 일2',
+        buyItem: '사고 싶은 것2',
         todoChecked: true,
         buyChecked: false,
     },
-   {
+    {
         id: 3,
         user: '',
-        todoContent: '할 일3',
-        buyContent: '사고 싶은 것3',
+        todoItem: '할 일3',
+        buyItem: '사고 싶은 것3',
         todoChecked: true,
         buyChecked: false,
     },
     {
         id: 4,
         user: '',
-        todoContent: '할 일4',
-        buyContent: '사고 싶은 것4',
+        todoItem: '할 일4',
+        buyItem: '사고 싶은 것4',
         todoChecked: true,
         buyChecked: false,
     },
 ]
 const todoItems = ref(data)
 const users = ref([])
-const contents = ref([])
+const items = ref([])
 const curUser = ref('all')
-const curContent = ref('')
+const curItem = ref('')
 
-setContents(data)
-// content 종류
-function setContents(res) {
-    const _res = res || todoItems.value;
-    const _contents = _res.reduce((acc, item) => {
-        Object.keys(item).map(key => {
-            key.indexOf('Content') !== -1 && acc.indexOf(key) === -1 && acc.push(key)
-        });
-        return acc;
-    }, []);
-    curContent.value = _contents[0];
-    contents.value = _contents;
+setItems(data)
+// item 종류
+function setItems(data) {
+    const _items = Object.keys(data[0])
+        .filter((key) => key.includes("Item"))
+
+    curItem.value = _items[0]
+    items.value = _items
 }
+
 // 현재 사용자 변경
 function onChangeUser(user) {
     curUser.value = user;
     filterData(); // 현재 사용자 해당 데이터 필터링
 }
-// 현재 컨텐츠 변경
-function onChangeContent(content) {
-    curContent.value = content;
+// 현재 사용자 변경
+function onChangeItem(item) {
+    curItem.value = item;
 }
 function addTodoItem(txt, user) {
-    const _check = `${curContent.value.replace('Content', '')}Checked`;
-    const obj = {
-        id: `${txt}_${Math.random()*1000}`,
-        [_check]: false,
-        [curContent.value]: txt,
-        user: user.trim()
-    };
+    const _check = `${curItem.value.replace('Item', '')}Checked`;
+    const obj = { id: `${txt}_${Math.random()*1000}`, [_check]: false, [curItem.value]:txt, user };
     setAddUser(user); // 사용자 추가
     todoItems.value.push(obj); // 데이터 넣기
 }
