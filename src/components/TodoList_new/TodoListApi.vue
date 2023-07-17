@@ -2,13 +2,13 @@
   <div class="todolist">
       <TodoListHeader />
       <TodoListInput 
-        @addTodoItem="addTodoItem" 
-        @onChangeUser="onChangeUser"
-        @onChangeItem="onChangeItem"
         :users="users" 
         :curUser="curUser"
         :items="items" 
         :curItem="curItem"
+        @addTodoItem="addTodoItem"
+        @onChangeUser="onChangeUser"
+        @onChangeItem="onChangeItem"
       />
       <TodoListInner v-for="item in items" :key="item"
         :item="item"
@@ -16,6 +16,10 @@
         :curUser="curUser"
         @removeItem="removeItem"
         @toggleEvent="toggleEvent" 
+        @editItem="editItem"
+      />
+      <TodoListEdit 
+        v-model="isModalOn"
       />
       <TodoListFooter 
         @clearAll="clearAllItems"
@@ -26,40 +30,33 @@
 import TodoListHeader from '@/components/TodoList/TodoListHeader.vue'
 import TodoListInput from '@/components/TodoList/TodoListInput.vue'
 import TodoListInner from '@/components/TodoList/TodoListInner.vue'
+import TodoListEdit from '@/components/TodoList/TodoListEdit.vue'
 import TodoListFooter from '@/components/TodoList/TodoListFooter.vue'
 import { ref, onMounted, computed } from 'vue';
 const data = [
     {
         id: 1,
-        user: '',
+        user: '강아지',
         todoItem: '할 일1',
-        buyItem: '사고 싶은 것1',
-        todoChecked: true,
-        buyChecked: false,
+        checked: false,
     },
     {
         id: 2,
-        user: '',
-        todoItem: '할 일2',
+        user: '고양이',
         buyItem: '사고 싶은 것2',
-        todoChecked: true,
-        buyChecked: false,
+        checked: false,
     },
     {
         id: 3,
-        user: '',
+        user: '토끼',
         todoItem: '할 일3',
-        buyItem: '사고 싶은 것3',
-        todoChecked: true,
-        buyChecked: false,
+        checked: false,
     },
     {
         id: 4,
-        user: '',
-        todoItem: '할 일4',
+        user: '사람',
         buyItem: '사고 싶은 것4',
-        todoChecked: true,
-        buyChecked: false,
+        checked: false,
     },
 ]
 const todoItems = ref(data)
@@ -67,13 +64,17 @@ const users = ref([])
 const items = ref([])
 const curUser = ref('all')
 const curItem = ref('')
+const isModalOn = ref(false)
 
 setItems(data)
 // item 종류
 function setItems(data) {
-    const _items = Object.keys(data[0])
-        .filter((key) => key.includes("Item"))
-
+    const _items =  data.reduce((obj, key) => {
+        Object.keys(key).map(key => {
+            key.indexOf('Item') !== -1 && obj.indexOf(key) === -1 && obj.push(key)
+        })
+        return obj
+    }, [])
     curItem.value = _items[0]
     items.value = _items
 }
@@ -83,22 +84,31 @@ function onChangeUser(user) {
     curUser.value = user;
     filterData(); // 현재 사용자 해당 데이터 필터링
 }
-// 현재 사용자 변경
+
 function onChangeItem(item) {
     curItem.value = item;
 }
 function addTodoItem(txt, user) {
-    const _check = `${curItem.value.replace('Item', '')}Checked`;
-    const obj = { id: `${txt}_${Math.random()*1000}`, [_check]: false, [curItem.value]:txt, user };
+    const obj = { id: `${txt}_${Math.random()*1000}`, checked: false, [curItem.value]:txt, user };
     setAddUser(user); // 사용자 추가
     todoItems.value.push(obj); // 데이터 넣기
 }
+
+function editItem(id, item) {
+    console.log('test', id, item)
+    // curEditId.value = id
+    // curEditItem.value = item
+    isModalOn.value = true
+}
+
 function removeItem(id) {
+    console.log(id)
     todoItems.value = todoItems.value.filter(item => item.id !== id);
     setUsers(); // 데이터 삭제되며 사용자 데이터 다시 셋팅
 }
 function toggleEvent(id) {
-    todoItems.value = todoItems.value.map(todo => todo.id === id ? {...todo, done: !todo.done} : todo);
+    console.log(todoItems.value)
+    todoItems.value = todoItems.value.map(todo => todo.id === id ? {...todo, checked: !todo.checked} : todo);
 }
 function clearAllItems() {
     todoItems.value = [];
@@ -121,10 +131,8 @@ function setUsers() {
 function filterData() {
     return curUser.value === 'all' ? todoItems.value : todoItems.value.filter(todo => todo.user === curUser.value);
 }
-
 // 필터링된 데이터
 const _todoItems = computed(() => filterData());
-
 onMounted(() => setUsers());
 </script>
 <style scoped>

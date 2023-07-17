@@ -13,19 +13,19 @@
     <div class="input__box shadow">
       <input 
         type="text" 
-        v-model="user"
+        v-model.trim="user"
         placeholder="이름 입력"
       >
     </div>
     <div class="input__box shadow">
       <input 
         type="text" 
-        v-model="newTodoItem"
+        v-model.trim="newTodoItem"
         v-on:keyup.enter="addTodo"
       >
       <button
         class="addContainer"
-        v-on:click="addTodo"
+        @click="addTodo"
       >
         <i class="fas fa-plus addBtn" aria-hidden="true"></i>
       </button>
@@ -54,13 +54,16 @@ const user = ref()
 function onChangeUser(e) {
   emit("onChangeUser", e.target.value);
 }
+
 function onChangeItem(e) {
+  console.log(e.target.value)
   emit("onChangeItem", e.target.value);
 }
+
 function addTodo() {
   if(newTodoItem.value !== ""){
     // this.$emit('이벤트 이름', 인자1, 인자2, ...);
-    emit('addTodoItem', user.value, newTodoItem.value)
+    emit('addTodoItem', newTodoItem.value, user.value)
     clearInput()
   } else {
     alert("내용 입력해주세요");
